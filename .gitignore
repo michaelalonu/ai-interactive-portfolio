@@ -1,5 +1,4 @@
 # Python environment
-/frontend
 backend/app/venv/
 backend/env/
 __pycache__/

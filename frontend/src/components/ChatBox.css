@@ -1,0 +1,51 @@
+.ChatBox {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.messages {
+  min-height: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.messageRow {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.messageRow.user {
+  justify-content: flex-end;
+}
+
+.messageRow.assistant {
+  justify-content: flex-start;
+}
+
+.messageBubble {
+  padding: 8px 12px;
+  border-radius: 10px;
+  max-width: 70%;
+}
+
+.messageBubble.user {
+  background: #daf1ff;
+}
+
+.messageBubble.assistant {
+  background: #eee;
+}
+
+.inputRow {
+  display: flex;
+  margin-top: 10px;
+}
+
+.input {
+  flex: 1;
+  padding: 8px;
+}
+
+.button {
+  margin-left: 8px;
+}
