@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 print("TTS service initialized")   #debug, remove ..
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 AUDIO_DIR = os.path.join(BASE_DIR, "static", "audio")
 os.makedirs(AUDIO_DIR, exist_ok=True)
 
@@ -21,7 +21,8 @@ def generate_tts(text: str) -> str | None:
         audio = el_client.text_to_speech.convert(
             text=text,
             voice_id="JBFqnCBsd6RMkjVDRZzb", # "George" - browse voices at elevenlabs.io/app/voice-library
-            model_id="eleven_v3", 
+            #model_id="eleven_v3", higher latency.
+            model_id="eleven_flash_v2_5", 
             output_format="mp3_44100_128",
         )
 

@@ -19,7 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="../static"), name="static")
 
 class ChatRequest(BaseModel):
     message: str
@@ -27,6 +27,7 @@ class ChatRequest(BaseModel):
 
 @app.post("/chat")
 async def chat(req: ChatRequest):
+    print("Entered Chat Endpoint with message:", req.message)  # Debug
     response = generate_response(
         req.message,
         req.session_id

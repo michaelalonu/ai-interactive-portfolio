@@ -17,27 +17,43 @@ function ChatBox() {
     startTalking: () => void;
     stopTalking: () => void;
   } | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  function stopCurrentAudio() {
+    if (audioRef.current) {
+      audioRef.current.pause(); // stop audio
+      audioRef.current.currentTime = 0; // reset play to start(seconds)
+      audioRef.current = null;
+    }
+
+    avatarControlsRef.current?.stopTalking();
+  }
   function playAudio(ttsUrl: string) {
+    stopCurrentAudio();
     const audio = new Audio(ttsUrl);
+    audioRef.current = audio;
 
     avatarControlsRef.current?.startTalking();
-    audio.play();
+
+    audio.play().catch(() => {
+      avatarControlsRef.current?.stopTalking();
+    });
 
     audio.onended = () => {
       avatarControlsRef.current?.stopTalking();
     };
-    
+
     audio.onerror = () => {
       avatarControlsRef.current?.stopTalking();
     };
   }
   const handleSend = async () => {
     if (!input || loading) return;
+    stopCurrentAudio();
     setLoading(true);
     setIsTyping(true);
 
@@ -70,7 +86,9 @@ function ChatBox() {
         ...prev,
         { role: "assistant", content: "Error occurred" },
       ]);
-      playAudio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
+      playAudio(
+        "https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg",
+      );
     }
 
     setLoading(false);
@@ -105,13 +123,12 @@ function ChatBox() {
         <button className="button" onClick={handleSend} disabled={loading}>
           {loading ? "..." : "Send"}
         </button>
-
       </div>
-        <Avatar
-          onReady={(controls) => {
-            avatarControlsRef.current = controls;
-          }} //the child avatar returns the controls to start and stop talking, which are stored in a ref to be used when playing audio
-        />
+      <Avatar
+        onReady={(controls) => {
+          avatarControlsRef.current = controls;
+        }} //the child avatar returns the controls to start and stop talking, which are stored in a ref to be used when playing audio
+      />
     </div>
   );
 }
