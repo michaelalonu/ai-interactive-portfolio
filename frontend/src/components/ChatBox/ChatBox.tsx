@@ -59,6 +59,9 @@ function ChatBox() {
       };
 
       setMessages((prev) => [...prev, botMessage]);
+      if (res.tts_url) {
+        playAudio(`http://localhost:8000${res.tts_url}`);
+      }
     } catch (err) {
       console.error(err);
       setIsTyping(false);

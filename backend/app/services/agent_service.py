@@ -74,6 +74,7 @@ def _decision_from_intent(intent: str) -> AgentDecision:
             style_instruction=(
                 "Answer like a strong backend engineer. Be concrete, mention architecture "
                 "tradeoffs, and use technical examples from the profile when relevant."
+                "Keep responses concise (2–3 sentences max)."
             ),
             follow_up="Would you like me to also explain the technical tradeoffs or challenges behind that project?",
         )
@@ -83,7 +84,9 @@ def _decision_from_intent(intent: str) -> AgentDecision:
             intent="hr",
             style_instruction=(
                 "Answer like a candidate speaking to a recruiter or hiring manager. "
-                "Be clear, confident, concise, and connect the answer to business value."
+                "Be clear, confident, persuasive, and connect the answer to business value."
+                "Keep responses concise (2–3 sentences max)."
+
             ),
             follow_up="Would you like a shorter recruiter-style version or a deeper interview-style answer?",
         )

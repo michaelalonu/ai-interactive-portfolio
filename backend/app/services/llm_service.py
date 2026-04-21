@@ -4,6 +4,7 @@ from groq import Groq
 from dotenv import load_dotenv
 from services.agent_service import build_agent_decision, build_agent_decision_from_intent
 from services.memory_service import get_history, add_message
+from services.tts_service import generate_tts
 
 load_dotenv()
 
@@ -76,9 +77,13 @@ def generate_response(user_message: str, session_id: str, forced_intent: str | N
     # Save conversation to memory
     add_message(session_id, "user", user_message)
     add_message(session_id, "assistant", answer)
+    tts_url = None #in case TTS generation fails, not break the response (and atleast get the text)
+
+    tts_url = generate_tts(answer)
 
     return {
         "message": answer,
         "intent": agent_decision.intent,
         "follow_up": agent_decision.follow_up,
+        "tts_url": tts_url
     }
