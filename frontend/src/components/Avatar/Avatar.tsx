@@ -18,7 +18,8 @@ export default function Avatar({ onReady }: Props) {
     autoplay: true,
   });
 
-  const intervalRef = useRef<number | null>(null);
+  const timeoutRef = useRef<number | null>(null);
+  // const currentValueRef = useRef(0);
 
   const getMouthInput = () =>
     rive
@@ -34,38 +35,50 @@ export default function Avatar({ onReady }: Props) {
   }, [rive]);
 
   function startTalking() {
-    const input = getMouthInput();
-    if (!input) return;
-    if (intervalRef.current) return;
+    if (timeoutRef.current) return; //prevent race condition of multipile call to start talking
 
-    intervalRef.current = window.setInterval(() => {
-      const nextInput = getMouthInput();
-      if (!nextInput) return;
-      nextInput.value = Math.floor(Math.random() * 12) + 1;
-    }, 120);
+    const talkLoop = () => {
+      const input = getMouthInput();
+
+      if (!input) {
+        timeoutRef.current = window.setTimeout(talkLoop, 100); // if there isn't input yet, try again in a bit later.
+        return;
+      }
+
+      input.value = Math.floor(Math.random() * 12) + 1;
+      const delay = 20 + Math.random() * 70; // dynamic change, more real.
+      timeoutRef.current = window.setTimeout(talkLoop, delay);
+    };
+
+    talkLoop();
+
   }
 
   function stopTalking() {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
 
     rive?.reset({ stateMachines: STATE_MACHINE_NAME, autoplay: true });
 
-    requestAnimationFrame(() => {
+    const resetMouth = () => {
       rive?.play();
       const input = getMouthInput();
       if (input) {
         input.value = 0;
       }
-    });
+    };
+
+    resetMouth();
+    requestAnimationFrame(resetMouth);
+    setTimeout(resetMouth, 50);
   }
 
   useEffect(() => {
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
 
       const input = rive

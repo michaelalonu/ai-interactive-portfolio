@@ -55,7 +55,9 @@ function ChatBox() {
     if (!input || loading) return;
     stopCurrentAudio();
     setLoading(true);
-    setIsTyping(true);
+    setTimeout(() => {
+      setIsTyping(true);
+    }, 250);
 
     const userMessage: Message = {
       role: "user",
@@ -104,7 +106,9 @@ function ChatBox() {
         ))}
         {isTyping && (
           <div className="messageRow assistant">
-            <div className="messageBubble assistant">Typing...</div>
+            <div className="messageBubble assistant">
+              <img src="/businessman_ponder_question.gif" alt="Thinking" />
+            </div>
           </div>
         )}
         <div ref={messagesEndRef} />
