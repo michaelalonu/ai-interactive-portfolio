@@ -1,17 +1,105 @@
 .ChatBox {
-  max-width: 600px;
-  margin: 0 auto;
+  width: min(920px, calc(100vw - 32px));
+  height: min(860px, calc(100vh - 140px));
+  margin: 0 auto 32px;
+  padding: 24px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  box-sizing: border-box;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top, rgba(96, 165, 250, 0.1), transparent 34%),
+    linear-gradient(135deg, #f0f2f5, #e4e7ec);
+  box-shadow:
+    0 28px 70px rgba(15, 23, 42, 0.08),
+    0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.ChatBox > div:last-child {
+  order: -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 260px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  border: 1px solid rgba(191, 219, 254, 0.6);
+  background:
+    radial-gradient(circle at top, rgba(125, 211, 252, 0.18), transparent 55%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.ChatBox > div:last-child > div {
+  width: 100% !important;
+  height: 220px !important;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ChatBox > div:last-child > div::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 105px);
+  top: 50%;
+  width: 26px;
+  height: 200px;
+  transform: translateY(-50%);
+  background: #2f2f2f;
+  border-radius: 2px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ChatBox > div:last-child canvas {
+  width: min(100%, 280px) !important;
+  height: auto !important;
+  filter: drop-shadow(0 16px 24px rgba(59, 130, 246, 0.12));
+}
+
+.ChatBox > div:last-child button {
+  display: none;
 }
 
 .messages {
-  min-height: 300px;
-  padding: 10px;
-  border: 1px solid #ccc;
+  min-height: 0;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  scroll-behavior: smooth;
+}
+
+.messages::-webkit-scrollbar {
+  width: 10px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
 }
 
 .messageRow {
   display: flex;
-  margin-bottom: 8px;
+  animation: message-in 260ms ease-out;
 }
 
 .messageRow.user {
@@ -23,29 +111,156 @@
 }
 
 .messageBubble {
-  padding: 8px 12px;
-  border-radius: 10px;
-  max-width: 70%;
+  max-width: min(78%, 640px);
+  padding: 14px 16px;
+  border-radius: 20px;
+  line-height: 1.5;
+  font-size: 0.96rem;
+  text-align: left;
+  word-break: break-word;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
 .messageBubble.user {
-  background: #daf1ff;
+  color: #0f172a;
+  background: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 100%);
+  border-bottom-right-radius: 8px;
 }
 
 .messageBubble.assistant {
-  background: #eee;
+  color: #1e293b;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-bottom-left-radius: 8px;
+}
+
+.messageBubble.assistant img {
+  display: block;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
 }
 
 .inputRow {
   display: flex;
-  margin-top: 10px;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  bottom: 0;
+  padding: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
 }
 
 .input {
   flex: 1;
-  padding: 8px;
+  min-width: 0;
+  border: 1px solid transparent;
+  background: #f8fafc;
+  color: #0f172a;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font: inherit;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.input::placeholder {
+  color: #94a3b8;
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(96, 165, 250, 0.55);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.14);
 }
 
 .button {
-  margin-left: 8px;
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  min-width: 92px;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.28);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(59, 130, 246, 0.32);
+}
+
+.button:disabled {
+  opacity: 0.72;
+  cursor: default;
+}
+
+@keyframes message-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .ChatBox {
+    width: calc(100vw - 20px);
+    height: calc(100vh - 96px);
+    padding: 14px;
+    gap: 12px;
+    border-radius: 22px;
+  }
+
+  .ChatBox > div:last-child {
+    min-height: 190px;
+    padding: 10px 12px;
+    border-radius: 18px;
+  }
+
+  .ChatBox > div:last-child > div {
+    height: 170px !important;
+  }
+
+  .ChatBox > div:last-child > div::before {
+    left: calc(50% - 82px);
+    width: 22px;
+    height: 155px;
+  }
+
+  .messages {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .messageBubble {
+    max-width: 88%;
+    padding: 12px 14px;
+  }
+
+  .inputRow {
+    padding: 10px;
+    border-radius: 18px;
+  }
+
+  .button {
+    min-width: 78px;
+    padding: 13px 15px;
+  }
 }
