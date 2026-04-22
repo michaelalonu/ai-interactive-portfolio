@@ -99,7 +99,7 @@ export default function Avatar({ onReady }: Props) {
   }, [onReady]);
 
   return (
-    <div style={{ width: 300, height: 300 }}>
+    <div>
       <RiveComponent />
       <button onClick={startTalking}>Start</button>
       <button onClick={stopTalking}>Stop</button>
