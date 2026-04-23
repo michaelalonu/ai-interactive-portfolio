@@ -1,86 +1,172 @@
-.appLayout {
-  width: 100%;
-  max-width: none;
-  height: 100vh;
-  margin: 0;
-  display: grid;
-  grid-template-columns: minmax(380px, 38vw) minmax(0, 1fr);
-  grid-template-rows: 1fr auto;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 0;
-  border: none;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.16), transparent 34%),
-    radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.1), transparent 40%),
-    linear-gradient(180deg, rgba(248, 251, 255, 0.96) 0%, rgba(236, 243, 252, 0.98) 100%);
+/* ═══════════════════════════════════════════════════════════════
+   Design Tokens
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --bg-base:      #f0f4f9;
+  --bg-panel:     #ffffff;
+  --border-light: rgba(0, 0, 0, 0.07);
+  --text-muted:   #94a3b8;
+  --shadow-card:  0 0 0 1px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.04);
+  --radius-card:  18px;
+  --header-h:     60px;
+  --gap:          10px;
+  --pad:          10px;
+
+  font-family: 'Plus Jakarta Sans', 'DM Sans', 'Segoe UI', system-ui, sans-serif;
 }
 
-.sidebar {
-  grid-row: 1 / span 2;
-  min-height: 0;
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  border-radius: 26px;
-  border: 1px solid rgba(191, 219, 254, 0.5);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(242, 248, 255, 0.92));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.94),
-    0 20px 44px rgba(15, 23, 42, 0.09);
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-base);
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80vw 55vh at 18% -8%, rgba(147,197,253,0.20) 0%, transparent 58%),
+    radial-gradient(ellipse 55vw 45vh at 92% 108%, rgba(196,181,253,0.10) 0%, transparent 58%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Root grid — desktop
+   col:   [sidebar 300-34vw]  [chat 1fr]
+   row 1: header (60px)       header
+   row 2: sidebar (1fr)       chat
+   row 3: sidebar             footer (auto)
+   ═══════════════════════════════════════════════════════════════ */
+.appLayout {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(280px, 34vw) minmax(0, 1fr);
+  grid-template-rows: var(--header-h) 1fr auto;
+  gap: var(--gap);
+  padding: var(--pad);
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.appHeader {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-light);
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 
-.main {
+/* ── Sidebar ─────────────────────────────────────────────────── */
+.sidebar {
+  grid-column: 1;
+  grid-row: 2 / span 2;    /* fills rows 2 + 3 beside chat+footer */
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 0;
-  border-radius: 26px;
-  border: 1px solid rgba(226, 232, 240, 0.88);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(246, 250, 255, 0.9));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.96),
-    0 20px 44px rgba(15, 23, 42, 0.09);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-light);
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
+  position: relative;
 }
 
+.sidebar::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 12%; right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.4), transparent);
+  z-index: 4;
+}
+
+/* ── Main chat ───────────────────────────────────────────────── */
+.main {
+  grid-column: 2;
+  grid-row: 2;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-light);
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  position: relative;
+}
+
+.main::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 18%; right: 18%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(99,102,241,0.32), transparent);
+  z-index: 4;
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
 .footer {
   grid-column: 2;
-  min-height: 44px;
+  grid-row: 3;
+  min-height: 28px;
   display: flex;
   align-items: center;
-  padding: 6px 4px 0;
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  color: #64748b;
   justify-content: flex-end;
+  padding: 0 4px;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
-/* mobile */
-@media (max-width: 900px) {
+/* ═══════════════════════════════════════════════════════════════
+   Tablet  (601 – 860 px)
+   Two-column but avatar panel is shorter (40% of remaining height)
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width: 601px) and (max-width: 860px) {
   .appLayout {
-    height: 100vh;
+    grid-template-columns: minmax(220px, 42%) minmax(0, 1fr);
+    grid-template-rows: var(--header-h) 1fr auto;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  /* sidebar stays spanning rows 2-3, same as desktop */
+  .sidebar { grid-column: 1; grid-row: 2 / span 2; }
+  .main    { grid-column: 2; grid-row: 2; }
+  .footer  { grid-column: 2; grid-row: 3; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Mobile  (≤ 600 px)
+   Single column stack: header / avatar / chat / footer
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .appLayout {
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(290px, auto) 1fr auto;
-    gap: 9px;
-    padding: 9px;
-    border-radius: 22px;
+    grid-template-rows: var(--header-h) 240px 1fr auto;
+    gap: 8px;
+    padding: 8px;
   }
 
-  .sidebar {
-    grid-row: 1;
-    grid-column: 1;
-  }
+  .appHeader { grid-column: 1; grid-row: 1; }
+  .sidebar   { grid-column: 1; grid-row: 2; }
+  .main      { grid-column: 1; grid-row: 3; }
+  .footer    { grid-column: 1; grid-row: 4; justify-content: center; padding-bottom: 4px; }
+}
 
-  .main {
-    grid-row: 2;
-    grid-column: 1;
-  }
-
-  .footer {
-    grid-column: 1;
-    justify-content: center;
-    padding-bottom: 2px;
+@media (min-width: 1440px) {
+  .appLayout {
+    max-width: 1600px;
+    margin-inline: auto;
   }
 }

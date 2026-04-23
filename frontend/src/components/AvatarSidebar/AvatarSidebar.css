@@ -1,112 +1,159 @@
-/* .avatarWrapper {
+/* ═══════════════════════════════════════════════════════════════
+   Avatar Sidebar
+   Strategy: overflow:hidden on .avatarWrapper clips the Rive
+   left-side number strip. Canvas is NEVER translated — only
+   scaled from its natural center so it stays perfectly centered
+   at every viewport width.
+   ═══════════════════════════════════════════════════════════════ */
+
+.avatarWrapper {
   width: 100%;
   height: 100%;
   min-height: 0;
 
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  padding: 18px 14px 4px;
+  align-items: center;
 
   background:
-    radial-gradient(circle at 50% 0%, rgba(96, 165, 250, 0.22), transparent 58%),
-    radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.9), transparent 52%),
-    linear-gradient(180deg, #fcfeff 0%, #ecf3ff 100%);
+    radial-gradient(ellipse 72% 60% at 50% 56%, rgba(147,197,253,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 90% 45% at 50% -5%, rgba(186,216,255,0.18) 0%, transparent 65%),
+    linear-gradient(180deg, #f2f7ff 0%, #e8f0fe 55%, #ddeaff 100%);
+
   position: relative;
   overflow: hidden;
+
+  /*
+   * Inset shadow on the LEFT edge — paints over the Rive green
+   * number strip without needing an extra element or translateX.
+   * Color matches the top of the background gradient (#f2f7ff).
+   * Spread = 54px covers the strip at all sizes.
+   */
+  box-shadow: inset 54px 0 0 0 #f2f7ff;
 }
 
+/* ── Dot-grid texture (z:0) ───────────────────────────────────── */
 .avatarWrapper::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 112px;
-  width: 56px;
-  background: linear-gradient(180deg, #2f3137 0%, #35373c 100%);
-  z-index: 2;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(59,130,246,0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
   pointer-events: none;
+  z-index: 0;
 }
 
+/* ── Bottom fade (z:5) ────────────────────────────────────────── */
 .avatarWrapper::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 112px;
-  background: linear-gradient(180deg, rgba(236, 243, 255, 0) 0%, rgba(236, 243, 255, 0.94) 100%);
+  left: 0; right: 0; bottom: 0;
+  height: 18%;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(221,234,255,0.55) 55%,
+    rgba(221,234,255,0.90) 100%
+  );
   pointer-events: none;
-  z-index: 3;
+  z-index: 5;
 }
 
+/* ── Inner div rendered by Rive ───────────────────────────────── */
 .avatarWrapper > div {
+  /* fill the wrapper so the canvas centres correctly */
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  overflow: hidden;
-}
-
-.avatarWrapper canvas {
-  width: min(100%, 620px) !important;
-  height: auto !important;
-  max-height: 92% !important;
+  align-items: center;
   position: relative;
-  left: auto;
-  bottom: auto;
-  transform: scale(1.2);
-  transform-origin: center bottom;
-  filter:
-    drop-shadow(0 20px 30px rgba(59, 130, 246, 0.12))
-    drop-shadow(0 8px 14px rgba(15, 23, 42, 0.08));
+  overflow: hidden;
   z-index: 1;
 }
 
-.avatarWrapper button {
-  display: none;
+/* ── Glassmorphism halo (z:0, sits behind canvas at z:2) ─────── */
+.avatarWrapper > div::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 65%;
+  /* height adapts to the wrapper's actual height */
+  aspect-ratio: 1;
+  background: rgba(255,255,255,0.36);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.7);
+  box-shadow:
+    0 0 48px rgba(147,197,253,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.85);
+  z-index: 0;
+  pointer-events: none;
 }
 
-@media (max-width: 900px) {
+/* ── Canvas ───────────────────────────────────────────────────── */
+.avatarWrapper canvas {
+  /*
+   * Let the canvas be as wide as it wants up to 100% of the
+   * wrapper width. Height is intrinsic (auto). The Rive canvas
+   * already positions itself; we just ensure it doesn't overflow.
+   * NO translateX — centering is handled by the flex parent.
+   */
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  position: relative;
+  z-index: 2;
+  transform: none;       /* reset all previous translate hacks */
+  transform-origin: center center;
+  filter:
+    drop-shadow(0 12px 28px rgba(59,130,246,0.14))
+    drop-shadow(0 3px 8px rgba(0,0,0,0.09));
+}
+
+.avatarWrapper button { display: none; }
+
+/* ═══════════════════════════════════════════════════════════════
+   Tablet  (861 – 1199 px)
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width: 861px) and (max-width: 1199px) {
+  .avatarWrapper > div::before {
+    width: 70%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Mobile  (≤ 600 px)
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
   .avatarWrapper {
     align-items: center;
-    padding: 8px 8px 0;
+    padding: 8px 0 0;
+    /* narrower strip on small screens */
+    box-shadow: inset 36px 0 0 0 #f2f7ff;
+  }
+
+  .avatarWrapper > div::before {
+    width: 80%;
   }
 
   .avatarWrapper::after {
-    height: 88px;
-  }
-
-  .avatarWrapper::before {
-    width: 38px;
-    bottom: 88px;
-  }
-
-  .avatarWrapper canvas {
-    width: min(100%, 360px) !important;
-    max-height: 92% !important;
-    transform: translateX(22px) scale(1.06);
+    height: 14%;
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   Large desktop  (≥ 1200 px)
+   ═══════════════════════════════════════════════════════════════ */
 @media (min-width: 1200px) {
   .avatarWrapper {
-    padding: 16px 12px 0;
+    /* slightly wider strip on large screens */
+    box-shadow: inset 62px 0 0 0 #f2f7ff;
   }
 
-  .avatarWrapper::after {
-    height: 122px;
+  .avatarWrapper > div::before {
+    width: 60%;
   }
-
-  .avatarWrapper::before {
-    width: 64px;
-    bottom: 122px;
-  }
-
-  .avatarWrapper canvas {
-    width: min(100%, 680px) !important;
-    max-height: 92% !important;
-    transform: translateX(56px) scale(1.2);
-  }
-} */
+}

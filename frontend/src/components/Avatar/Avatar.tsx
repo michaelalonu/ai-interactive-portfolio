@@ -19,7 +19,7 @@ export default function Avatar({ onReady }: Props) {
   });
 
   const timeoutRef = useRef<number | null>(null);
-  // const currentValueRef = useRef(0);
+  // const currentValueRef = useRef(0);  //don't forget to delete
 
   const getMouthInput = () =>
     rive
@@ -101,7 +101,7 @@ export default function Avatar({ onReady }: Props) {
   return (
     <div>
       <RiveComponent />
-      <button onClick={startTalking}>Start</button>
+      <button onClick={startTalking}>Start</button>  {/* don't forget to delete */}
       <button onClick={stopTalking}>Stop</button>
     </div>
   );
