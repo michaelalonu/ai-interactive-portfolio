@@ -1,12 +1,11 @@
-import "./ChatBox.css";
+import "./ChatPanel.css";
 import { useState, useEffect, useRef } from "react";
 import { sendMessage } from "../../services/api";
 import type { Message } from "../../types/chat";
-import Avatar from "../Avatar/Avatar";
 
 const sessionId = "test-session-123";
 
-function ChatBox() {
+function ChatPanel() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -97,7 +96,7 @@ function ChatBox() {
   };
 
   return (
-    <div className="ChatBox">
+    <div className="ChatPanel">
       <div className="messages">
         {messages.map((msg, i) => (
           <div key={i} className={`messageRow ${msg.role}`}>
@@ -128,13 +127,13 @@ function ChatBox() {
           {loading ? "..." : "Send"}
         </button>
       </div>
-      <Avatar
+      {/* <Avatar
         onReady={(controls) => {
           avatarControlsRef.current = controls;
         }} //the child avatar returns the controls to start and stop talking, which are stored in a ref to be used when playing audio
-      />
+      /> */}
     </div>
   );
 }
 
-export default ChatBox;
+export default ChatPanel;

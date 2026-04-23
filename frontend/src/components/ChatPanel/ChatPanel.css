@@ -1,0 +1,205 @@
+/* ─── Chat Panel ─────────────────────────────────────────────── */
+.ChatPanel {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 12px;
+  background: transparent;
+}
+ 
+/* ─── Messages area ──────────────────────────────────────────── */
+.messages {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(10, 12, 16, 0.6);
+  scroll-behavior: smooth;
+ 
+  /* custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79, 156, 249, 0.2) transparent;
+}
+ 
+.messages::-webkit-scrollbar { width: 4px; }
+.messages::-webkit-scrollbar-track { background: transparent; }
+.messages::-webkit-scrollbar-thumb {
+  background: rgba(79, 156, 249, 0.25);
+  border-radius: 4px;
+}
+ 
+/* empty state hint */
+.messages:empty::after {
+  content: "Start a conversation…";
+  display: block;
+  text-align: center;
+  color: rgba(255,255,255,0.1);
+  font-size: 0.9rem;
+  margin-top: 40px;
+  letter-spacing: 0.04em;
+}
+ 
+/* ─── Message rows ───────────────────────────────────────────── */
+.messageRow {
+  display: flex;
+  margin-bottom: 10px;
+  animation: fadeUp 0.22s ease both;
+}
+ 
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+.messageRow.user  { justify-content: flex-end; }
+.messageRow.assistant { justify-content: flex-start; }
+ 
+/* ─── Bubbles ────────────────────────────────────────────────── */
+.messageBubble {
+  max-width: min(80%, 640px);
+  padding: 11px 15px;
+  border-radius: 16px;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+ 
+.messageBubble.user {
+  background: linear-gradient(135deg, #4f9cf9 0%, #2563eb 100%);
+  color: #fff;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 4px 20px rgba(79, 156, 249, 0.3);
+}
+ 
+.messageBubble.assistant {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #c8d3e8;
+  border-bottom-left-radius: 5px;
+}
+ 
+.messageBubble.assistant img {
+  display: block;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+ 
+/* ─── Input row ──────────────────────────────────────────────── */
+.inputRow {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  transition: border-color 200ms ease;
+}
+ 
+.inputRow:focus-within {
+  border-color: rgba(79, 156, 249, 0.35);
+  box-shadow: 0 0 0 3px rgba(79, 156, 249, 0.08);
+}
+ 
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #e8edf5;
+  font: inherit;
+  font-size: 0.95rem;
+  caret-color: #4f9cf9;
+  transition: background 160ms ease;
+}
+ 
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+ 
+.input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.04);
+}
+ 
+.button {
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 11px;
+  padding: 11px 20px;
+  min-width: 80px;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: linear-gradient(135deg, #4f9cf9 0%, #2563eb 100%);
+  box-shadow: 0 4px 18px rgba(79, 156, 249, 0.3);
+  cursor: pointer;
+  transition:
+    transform 130ms ease,
+    box-shadow 130ms ease,
+    opacity 130ms ease;
+}
+ 
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(79, 156, 249, 0.42);
+}
+ 
+.button:active:not(:disabled) {
+  transform: translateY(0);
+}
+ 
+.button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+ 
+/* ─── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .ChatPanel {
+    padding: 8px;
+    gap: 8px;
+  }
+ 
+  .messages {
+    padding: 14px 12px;
+    border-radius: 12px;
+  }
+ 
+  .messageBubble {
+    max-width: 88%;
+    padding: 10px 13px;
+    font-size: 0.92rem;
+  }
+ 
+  .messageBubble.assistant img {
+    width: 60px;
+    height: 60px;
+  }
+ 
+  .inputRow {
+    padding: 6px;
+    border-radius: 13px;
+    gap: 6px;
+  }
+ 
+  .input {
+    padding: 10px 12px;
+  }
+ 
+  .button {
+    min-width: 68px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+}
