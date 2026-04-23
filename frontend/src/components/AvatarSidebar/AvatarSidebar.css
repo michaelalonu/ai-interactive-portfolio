@@ -1,63 +1,45 @@
-/* ─── Avatar Sidebar ─────────────────────────────────────────── */
-.avatarWrapper {
+/* .avatarWrapper {
   width: 100%;
   height: 100%;
   min-height: 0;
- 
+
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding: 0;
- 
+  padding: 18px 14px 4px;
+
   background:
-    radial-gradient(ellipse 70% 50% at 50% -10%, rgba(79, 156, 249, 0.13) 0%, transparent 70%),
-    radial-gradient(ellipse 90% 40% at 50% 110%, rgba(79, 156, 249, 0.1) 0%, transparent 70%),
-    linear-gradient(180deg, #0f1117 0%, #13161e 100%);
- 
+    radial-gradient(circle at 50% 0%, rgba(96, 165, 250, 0.22), transparent 58%),
+    radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.9), transparent 52%),
+    linear-gradient(180deg, #fcfeff 0%, #ecf3ff 100%);
   position: relative;
   overflow: hidden;
 }
- 
-/* ── Black bar to cover the green numbered buttons (left side) ── */
+
 .avatarWrapper::before {
   content: "";
   position: absolute;
   left: 0;
   top: 0;
-  bottom: 0;
-  width: 54px;
-  background: #0f1117;
-  z-index: 10;
+  bottom: 112px;
+  width: 56px;
+  background: linear-gradient(180deg, #2f3137 0%, #35373c 100%);
+  z-index: 2;
   pointer-events: none;
 }
- 
-/* ── Subtle dot-grid pattern for depth ───────────────────────── */
-.avatarWrapper > div::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none;
-  z-index: 0;
-}
- 
-/* ── Bottom fade out ──────────────────────────────────────────── */
+
 .avatarWrapper::after {
   content: "";
   position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 130px;
-  background: linear-gradient(180deg,
-    transparent 0%,
-    rgba(19, 22, 30, 0.6) 50%,
-    #13161e 100%
-  );
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 112px;
+  background: linear-gradient(180deg, rgba(236, 243, 255, 0) 0%, rgba(236, 243, 255, 0.94) 100%);
   pointer-events: none;
-  z-index: 5;
+  z-index: 3;
 }
- 
-/* ── Canvas wrapper ───────────────────────────────────────────── */
+
 .avatarWrapper > div {
   width: 100%;
   height: 100%;
@@ -65,60 +47,66 @@
   justify-content: center;
   align-items: flex-end;
   overflow: hidden;
-  position: relative;
 }
- 
+
 .avatarWrapper canvas {
-  width: min(100%, 580px) !important;
+  width: min(100%, 620px) !important;
   height: auto !important;
   max-height: 92% !important;
   position: relative;
-  z-index: 1;
-  transform: translateX(28px) scale(1.18);
+  left: auto;
+  bottom: auto;
+  transform: scale(1.2);
   transform-origin: center bottom;
   filter:
-    drop-shadow(0 0 40px rgba(79, 156, 249, 0.15))
-    drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+    drop-shadow(0 20px 30px rgba(59, 130, 246, 0.12))
+    drop-shadow(0 8px 14px rgba(15, 23, 42, 0.08));
+  z-index: 1;
 }
- 
-/* hide built-in buttons */
+
 .avatarWrapper button {
   display: none;
 }
- 
-/* ── Responsive ───────────────────────────────────────────────── */
-@media (max-width: 860px) {
+
+@media (max-width: 900px) {
   .avatarWrapper {
     align-items: center;
-    padding: 0;
+    padding: 8px 8px 0;
   }
- 
+
+  .avatarWrapper::after {
+    height: 88px;
+  }
+
   .avatarWrapper::before {
     width: 38px;
+    bottom: 88px;
   }
- 
-  .avatarWrapper::after {
-    height: 80px;
-  }
- 
+
   .avatarWrapper canvas {
-    width: min(100%, 340px) !important;
-    max-height: 95% !important;
-    transform: translateX(20px) scale(1.1);
+    width: min(100%, 360px) !important;
+    max-height: 92% !important;
+    transform: translateX(22px) scale(1.06);
   }
 }
- 
+
 @media (min-width: 1200px) {
-  .avatarWrapper::before {
-    width: 62px;
+  .avatarWrapper {
+    padding: 16px 12px 0;
   }
- 
+
   .avatarWrapper::after {
-    height: 150px;
+    height: 122px;
   }
- 
+
+  .avatarWrapper::before {
+    width: 64px;
+    bottom: 122px;
+  }
+
   .avatarWrapper canvas {
     width: min(100%, 680px) !important;
-    transform: translateX(50px) scale(1.2);
+    max-height: 92% !important;
+    transform: translateX(56px) scale(1.2);
   }
-}
+} */
