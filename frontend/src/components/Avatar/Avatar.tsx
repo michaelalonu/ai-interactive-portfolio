@@ -19,7 +19,6 @@ export default function Avatar({ onReady }: Props) {
   });
 
   const timeoutRef = useRef<number | null>(null);
-  // const currentValueRef = useRef(0);  //don't forget to delete
 
   const getMouthInput = () =>
     rive
@@ -51,7 +50,6 @@ export default function Avatar({ onReady }: Props) {
     };
 
     talkLoop();
-
   }
 
   function stopTalking() {
@@ -91,18 +89,16 @@ export default function Avatar({ onReady }: Props) {
   }, [rive]);
 
   useEffect(() => {
-    const input = getMouthInput();
-    if (!input) return;
+    if (!rive) return;
 
+    console.log("Avatar ready (rive loaded)");  //debug
     onReady?.({ startTalking, stopTalking });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onReady]);
+  }, [rive]);
 
   return (
     <div>
       <RiveComponent />
-      <button onClick={startTalking}>Start</button>  {/* don't forget to delete */}
-      <button onClick={stopTalking}>Stop</button>
     </div>
   );
 }

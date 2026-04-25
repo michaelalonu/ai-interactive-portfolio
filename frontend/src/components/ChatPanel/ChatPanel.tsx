@@ -4,18 +4,19 @@ import { sendMessage } from "../../services/api";
 import type { Message } from "../../types/chat";
 
 const sessionId = "test-session-123";
+type Props = {
+  avatarControlsRef: React.RefObject<{
+    startTalking: () => void;
+    stopTalking: () => void;
+  } | null>;
+};
 
-function ChatPanel() {
+function ChatPanel({ avatarControlsRef }: Props) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [isTyping, setIsTyping] = useState(false);
-
-  const avatarControlsRef = useRef<{
-    startTalking: () => void;
-    stopTalking: () => void;
-  } | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ function ChatPanel() {
     };
   }
   const handleSend = async () => {
+    console.log("Controls in ChatPanel:", avatarControlsRef.current);
     if (!input || loading) return;
     stopCurrentAudio();
     setLoading(true);
@@ -65,7 +67,7 @@ function ChatPanel() {
 
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-
+    console.log("Controls in ChatPanel:", avatarControlsRef.current); //debug
     try {
       const res = await sendMessage(userMessage.content, sessionId);
       setIsTyping(false);

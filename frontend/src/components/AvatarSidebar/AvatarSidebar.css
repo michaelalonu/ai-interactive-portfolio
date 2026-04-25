@@ -1,159 +1,155 @@
-/* ═══════════════════════════════════════════════════════════════
-   Avatar Sidebar
-   Strategy: overflow:hidden on .avatarWrapper clips the Rive
-   left-side number strip. Canvas is NEVER translated — only
-   scaled from its natural center so it stays perfectly centered
-   at every viewport width.
-   ═══════════════════════════════════════════════════════════════ */
+/*
+ * APPROACH: clip-path on the Rive wrapper div
+ * ─────────────────────────────────────────────
+ * clip-path: inset() cuts pixels at paint level — no z-index
+ * battles, no color matching, works on every screen size.
+ *
+ * --clip-l : hides the left number strip
+ * --clip-r : mirrors left so the face stays centred
+ *
+ * Desktop/tablet: 10% each side (confirmed working by you).
+ * Mobile: strip is physically the same px width but the canvas
+ * is much narrower, so the strip is a larger % — needs 18%.
+ */
 
+/* ── Default (desktop + tablet) — confirmed working ─────────── */
+/* :root {
+  --clip-l: 10%;
+  --clip-r: 10%;
+} */
+ :root {
+  --clip-l: clamp(40px, 10%, 80px);
+  --clip-r: clamp(40px, 10%, 80px);
+}
+
+/* ── Mobile override ─────────────────────────────────────────── */
+/* @media (max-width: 600px) {
+  :root {
+    --clip-l: clamp(45px, 18vw, 70px);
+    --clip-r: clamp(45px, 18vw, 70px);
+  }
+} */ 
+
+
+/* Mobile גדול (≈ 600–400) — פה הבעיה */
+@media (max-width: 600px) {
+  :root {
+--clip-l: max(60px, 32%);
+--clip-r: max(60px, 32%);  }
+}
+
+/* Mobile רגיל (≈ 400–355) */
+@media (max-width: 477px) {
+  :root {
+    --clip-l: clamp(123px, 27%, 170px);
+    --clip-r: clamp(123px, 27%, 170px);
+  }
+}
+@media (max-width: 467px) {
+  :root {
+    --clip-l: clamp(120px, 25%, 170px);
+    --clip-r: clamp(120px, 25%, 170px);
+  }
+}
+@media (max-width: 450px) {
+  :root {
+    --clip-l: clamp(110px, 23%, 150px);
+    --clip-r: clamp(110px, 23%, 150px);
+  }
+}
+@media (max-width: 423px) {
+  :root {
+    --clip-l: clamp(96px, 22%, 120px);
+    --clip-r: clamp(94px, 22%, 120px);
+  }
+}
+@media (max-width: 394px) {
+  :root {
+    --clip-l: clamp(85px, 20%, 120px);
+    --clip-r: clamp(85px, 20%, 120px);
+  }
+}
+@media (max-width: 374px) {
+  :root {
+    --clip-l: clamp(75px, 20%, 120px);
+    --clip-r: clamp(75px, 20%, 120px);
+  }
+}
+
+/* Small devices (≈ 355 ומטה) */
+@media (max-width: 355px) {
+  :root {
+    --clip-l: 62px;
+    --clip-r: 62px;
+  }
+}
+
+/* ── Outer wrapper ───────────────────────────────────────────── */
 .avatarWrapper {
   width: 100%;
   height: 100%;
   min-height: 0;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  background:
-    radial-gradient(ellipse 72% 60% at 50% 56%, rgba(147,197,253,0.22) 0%, transparent 70%),
-    radial-gradient(ellipse 90% 45% at 50% -5%, rgba(186,216,255,0.18) 0%, transparent 65%),
-    linear-gradient(180deg, #f2f7ff 0%, #e8f0fe 55%, #ddeaff 100%);
-
-  position: relative;
+  padding: 20px 12px;
+  box-sizing: border-box;
   overflow: hidden;
 
-  /*
-   * Inset shadow on the LEFT edge — paints over the Rive green
-   * number strip without needing an extra element or translateX.
-   * Color matches the top of the background gradient (#f2f7ff).
-   * Spread = 54px covers the strip at all sizes.
-   */
-  box-shadow: inset 54px 0 0 0 #f2f7ff;
+  background:
+    radial-gradient(ellipse 72% 60% at 50% 54%, rgba(147,197,253,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 90% 45% at 50% -5%, rgba(186,216,255,0.18) 0%, transparent 65%),
+    linear-gradient(180deg, #f2f7ff 0%, #e8f0fe 55%, #ddeaff 100%);
 }
 
-/* ── Dot-grid texture (z:0) ───────────────────────────────────── */
-.avatarWrapper::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(59,130,246,0.055) 1px, transparent 1px);
-  background-size: 24px 24px;
-  pointer-events: none;
-  z-index: 0;
+/* ── Mobile padding ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .avatarWrapper {
+    padding: 10px 8px;
+  }
 }
 
-/* ── Bottom fade (z:5) ────────────────────────────────────────── */
-.avatarWrapper::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 18%;
-  background: linear-gradient(180deg,
-    transparent 0%,
-    rgba(221,234,255,0.55) 55%,
-    rgba(221,234,255,0.90) 100%
-  );
-  pointer-events: none;
-  z-index: 5;
+/* ── Tablet ──────────────────────────────────────────────────── */
+@media (min-width: 601px) and (max-width: 860px) {
+  .avatarWrapper {
+    padding: 14px 10px;
+  }
 }
 
-/* ── Inner div rendered by Rive ───────────────────────────────── */
-.avatarWrapper > div {
-  /* fill the wrapper so the canvas centres correctly */
+/* ── Large desktop ───────────────────────────────────────────── */
+@media (min-width: 1400px) {
+  .avatarWrapper {
+    padding: 28px 20px;
+  }
+}
+
+/* ── Canvas container ────────────────────────────────────────── */
+.avatarCanvas {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  position: relative;
+  justify-content: center;
   overflow: hidden;
-  z-index: 1;
+  position: relative;
 }
 
-/* ── Glassmorphism halo (z:0, sits behind canvas at z:2) ─────── */
-.avatarWrapper > div::before {
-  content: "";
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 65%;
-  /* height adapts to the wrapper's actual height */
-  aspect-ratio: 1;
-  background: rgba(255,255,255,0.36);
-  backdrop-filter: blur(22px) saturate(1.3);
-  -webkit-backdrop-filter: blur(22px) saturate(1.3);
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.7);
-  box-shadow:
-    0 0 48px rgba(147,197,253,0.18),
-    inset 0 1px 0 rgba(255,255,255,0.85);
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* ── Canvas ───────────────────────────────────────────────────── */
-.avatarWrapper canvas {
-  /*
-   * Let the canvas be as wide as it wants up to 100% of the
-   * wrapper width. Height is intrinsic (auto). The Rive canvas
-   * already positions itself; we just ensure it doesn't overflow.
-   * NO translateX — centering is handled by the flex parent.
-   */
+/* ── Rive host div — this is where the clip happens ─────────── */
+.avatarCanvas > div {
   width: 100% !important;
   height: 100% !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  position: relative;
-  z-index: 2;
-  transform: none;       /* reset all previous translate hacks */
-  transform-origin: center center;
-  filter:
-    drop-shadow(0 12px 28px rgba(59,130,246,0.14))
-    drop-shadow(0 3px 8px rgba(0,0,0,0.09));
+  clip-path: inset(0 var(--clip-r) 0 var(--clip-l));
+  overflow: hidden;
 }
 
-.avatarWrapper button { display: none; }
-
-/* ═══════════════════════════════════════════════════════════════
-   Tablet  (861 – 1199 px)
-   ═══════════════════════════════════════════════════════════════ */
-@media (min-width: 861px) and (max-width: 1199px) {
-  .avatarWrapper > div::before {
-    width: 70%;
-  }
+/* ── Canvas itself ───────────────────────────────────────────── */
+.avatarCanvas > div canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   Mobile  (≤ 600 px)
-   ═══════════════════════════════════════════════════════════════ */
-@media (max-width: 600px) {
-  .avatarWrapper {
-    align-items: center;
-    padding: 8px 0 0;
-    /* narrower strip on small screens */
-    box-shadow: inset 36px 0 0 0 #f2f7ff;
-  }
-
-  .avatarWrapper > div::before {
-    width: 80%;
-  }
-
-  .avatarWrapper::after {
-    height: 14%;
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   Large desktop  (≥ 1200 px)
-   ═══════════════════════════════════════════════════════════════ */
-@media (min-width: 1200px) {
-  .avatarWrapper {
-    /* slightly wider strip on large screens */
-    box-shadow: inset 62px 0 0 0 #f2f7ff;
-  }
-
-  .avatarWrapper > div::before {
-    width: 60%;
-  }
+/* ── Hide Rive dev buttons ───────────────────────────────────── */
+.avatarWrapper button {
+  display: none !important;
 }

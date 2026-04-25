@@ -1,10 +1,19 @@
 import Avatar from "../Avatar/Avatar";
 import "./AvatarSidebar.css";
 
-export default function AvatarSidebar() {
+type Props = {
+  onReady?: (controls: {
+    startTalking: () => void;
+    stopTalking: () => void;
+  }) => void;
+};
+
+export default function AvatarSidebar({ onReady }: Props) {
   return (
     <div className="avatarWrapper">
-      <Avatar />
+      <div className="avatarCanvas">
+          <Avatar onReady={onReady}/>
+      </div>
     </div>
-  );
+    );
 }
