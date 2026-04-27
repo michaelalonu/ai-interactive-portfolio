@@ -1,5 +1,6 @@
 import os
-import json
+import json, time
+from tracemalloc import start
 from groq import Groq
 from dotenv import load_dotenv
 from services.agent_service import build_agent_decision, build_agent_decision_from_intent
@@ -19,17 +20,72 @@ with open(os.path.join(BASE_DIR, "../data/profile.json")) as f:
     PROFILE = json.load(f)
 
 
+def _format_arsenal(arsenal: dict) -> str:
+    category_labels = {
+        "languages": "Languages",
+        "backend": "Backend",
+        "frontend": "Frontend",
+        "data_devops": "Data & DevOps",
+        "cloud_realtime_ai": "Cloud, Realtime & AI",
+    }
+    lines = []
+
+    for category, skills in arsenal.items():
+        label = category_labels.get(category, category.replace("_", " ").title())
+        lines.append(f"- {label}: {', '.join(skills)}")
+
+    return "\n".join(lines)
+
+
+def _format_projects(projects: list[dict]) -> str:
+    formatted_projects = []
+
+    for project in projects:
+        highlights = "\n".join(
+            f"  - {highlight}" for highlight in project.get("technical_highlights", [])
+        )
+        formatted_projects.append(
+            "\n".join(
+                [
+                    f"Project: {project.get('name', 'Unknown Project')}",
+                    f"Summary: {project.get('summary', '')}",
+                    f"Impact: {project.get('impact', '')}",
+                    f"Stack: {', '.join(project.get('stack', []))}",
+                    "Technical Highlights:",
+                    highlights or "  - No highlights provided.",
+                ]
+            )
+        )
+
+    return "\n\n".join(formatted_projects)
+
+
 def build_context():
+    identity = PROFILE.get("identity", {})
+    technical_arsenal = PROFILE.get("technical_arsenal", {})
+    flagship_projects = PROFILE.get("flagship_projects", [])
+    soft_skills_pitch = PROFILE.get("soft_skills_pitch", {})
+
     return f"""
-Profile:
-Name: {PROFILE['name']}
-Role: {PROFILE['role']}
+You are representing this professional profile:
 
-Skills:
-{', '.join(PROFILE['skills'])}
+HEADLINE IDENTITY:
+Name: {identity.get('name', '')}
+Role: {identity.get('role', '')}
+Focus: {identity.get('focus', '')}
+Location: {identity.get('location', '')}
 
-Projects:
-{json.dumps(PROFILE['projects'], indent=2)}
+TECHNICAL ARSENAL:
+{_format_arsenal(technical_arsenal)}
+
+FLAGSHIP PROJECTS:
+{_format_projects(flagship_projects)}
+
+WORKING STYLE:
+Approach: {soft_skills_pitch.get('approach', '')}
+Value Add: {soft_skills_pitch.get('value_add', '')}
+
+Use achievements as evidence. Do not just list tools or repeat the profile verbatim.
 """
 
 def build_messages(user_message: str, session_id: str, forced_intent: str | None = None):
@@ -41,20 +97,33 @@ def build_messages(user_message: str, session_id: str, forced_intent: str | None
     else:
         agent_decision = build_agent_decision(user_message)
 
-    history = get_history(session_id)
-    messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "system", "content": context},
-        {
-            "role": "system",
-            "content": (
-                f"Detected intent: {agent_decision.intent}\n"
-                f"Response style: {agent_decision.style_instruction}\n"
-                f"Suggest a natural follow-up question when appropriate. "
-                f"A good example is: {agent_decision.follow_up}"                
-            ),
-        },
-    ]
+    history = get_history(session_id)[-8:]
+    messages = []
+    # 🧠 system identity
+    messages.append({
+        "role": "system",
+        "content": SYSTEM_PROMPT
+    })
+    # 🧾 profile context
+    messages.append({
+        "role": "system",
+        "content": context
+    })
+    # 🔒 HARD RULES 
+    messages.append({
+        "role": "system",
+        "content": agent_decision.style_instruction
+    })
+    # 🎯 BEHAVIOR (Leading the converstion)
+    messages.append({
+        "role": "system",
+        "content": (
+            f"You are in a {agent_decision.intent} conversation.\n"
+            f"Guide the conversation forward naturally.\n"
+            f"Example direction you can take: {agent_decision.follow_up}"
+        )
+    })
+
     messages.extend(history)
 
     messages.append({"role": "user", "content": user_message})
@@ -65,24 +134,31 @@ def build_messages(user_message: str, session_id: str, forced_intent: str | None
 
 def generate_response(user_message: str, session_id: str, forced_intent: str | None = None):
     messages, agent_decision = build_messages(user_message, session_id, forced_intent)
-
-    completion = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=messages,
-        temperature=0.7,
-    )
-
-    answer = completion.choices[0].message.content
+    start = time.time()
+    try:
+        completion = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=messages,
+            temperature=0.7,
+        )
+        raw_answer = completion.choices[0].message.content
+    except Exception as e:
+        print(f"Error calling Groq: {e}")
+        raw_answer = "I'm having a brief technical moment. Can you give me a minute or two and ask again? If this continues, please reach out to the administrator."
+    final_answer = f"{raw_answer.strip()}"
 
     # Save conversation to memory
     add_message(session_id, "user", user_message)
-    add_message(session_id, "assistant", answer)
+    add_message(session_id, "assistant", final_answer)
     tts_url = None #in case TTS generation fails, not break the response (and atleast get the text)
 
-    tts_url = generate_tts(answer)
-
+    tts_url = generate_tts(final_answer)
+    latency = time.time() - start
+    print(f"[LLM] intent={agent_decision.intent} latency={latency:.2f}s")
+    print(f"[USER] {user_message}")
+    print(f"[AI] {raw_answer}")
     return {
-        "message": answer,
+        "message": final_answer,
         "intent": agent_decision.intent,
         "follow_up": agent_decision.follow_up,
         "tts_url": tts_url

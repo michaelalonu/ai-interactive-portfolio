@@ -21,7 +21,7 @@ function ChatPanel({ avatarControlsRef }: Props) {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isTyping]);
 
   function stopCurrentAudio() {
     if (audioRef.current) {

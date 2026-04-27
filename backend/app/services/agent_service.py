@@ -72,30 +72,56 @@ def _decision_from_intent(intent: str) -> AgentDecision:
         return AgentDecision(
             intent="technical",
             style_instruction=(
+                build_response_instruction() +
                 "Answer like a strong backend engineer. Be concrete, mention architecture "
                 "tradeoffs, and use technical examples from the profile when relevant. "
                 "Keep responses concise (2–3 sentences max). Avoid long explanations"
             ),
-            follow_up="Would you like me to also explain the technical tradeoffs or challenges behind that project?",
+            follow_up=generate_follow_up(intent),
+            # follow_up="Would you like me to also explain the technical tradeoffs or challenges behind that project?",
         )
 
     if intent == "hr":
         return AgentDecision(
             intent="hr",
             style_instruction=(
+                build_response_instruction() +
                 "Answer like a candidate speaking to a recruiter or hiring manager. "
                 "Be clear, confident, persuasive, and connect the answer to business value. "
                 "Keep responses concise (2–3 sentences max). Avoid long explanations"
 
             ),
-            follow_up="Would you like a shorter recruiter-style version or a deeper interview-style answer?",
+            follow_up=generate_follow_up(intent),
+            # follow_up="Would you like a shorter recruiter-style version or a deeper interview-style answer?",
         )
 
     return AgentDecision(
         intent="general",
         style_instruction=(
+            build_response_instruction() +
             "Answer clearly and keep the tone balanced between professional and friendly. "
             "If useful, guide the conversation toward projects, strengths, or technical depth."
         ),
-        follow_up="Would you like me to expand on projects, backend skills, or how I work in a team?",
+        follow_up=generate_follow_up(intent),
+        # follow_up="Would you like me to expand on projects, backend skills, or how I work in a team?",
     )
+
+def build_response_instruction() -> str:
+    return (
+        "You MUST structure your answer in this format:\n"
+        "1. Direct Answer (clear and short)\n"
+        "2. Value (why this matters, impact, strength)\n"
+        "3. Direction (guide the conversation forward with a specific suggestion)\n\n"
+        "Rules:\n"
+        "- Be concise (1-3 sentences total)\n"
+        "- Sound confident and professional\n"
+        "- Avoid generic statements\n"
+        "- Always include a natural follow-up direction\n"
+    )
+
+def generate_follow_up(intent: str) -> str:
+    if intent == "technical":
+        return "I can walk you through the architecture or a real challenge I solved there."
+    if intent == "hr":
+        return "I can also share how this impacted the team or business results."
+    return "I can dive into a project or explain how I approach backend systems."
