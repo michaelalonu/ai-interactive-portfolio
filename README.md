@@ -1,137 +1,148 @@
+# AI Interactive Portfolio
 
-```
-AI_Avatar_Agent
-├─ backend
-│  ├─ app
-│  │  ├─ api
-│  │  ├─ main.py
-│  │  ├─ models
-│  │  ├─ requirements.txt
-│  │  ├─ services
-│  │  │  ├─ agent_service.py
-│  │  │  ├─ llm_service.py
-│  │  │  ├─ memory_service.py
-│  │  │  └─ tts_service.py
-│  │  └─ utils
-│  ├─ requirements.txt
-│  └─ static
-│     └─ audio
-│        ├─ 5b7ca22e-4007-4bfe-90ca-7ac665b2f826.mp3
-│        ├─ 5fed65cd-23c7-42da-8b79-ae26c3db33c7.mp3
-│        └─ e13ac1a9-6959-4dd5-a61f-101bb4d77826.mp3
-├─ docker-compose.yml
-├─ docs
-├─ frontend
-│  ├─ eslint.config.js
-│  ├─ index.html
-│  ├─ package-lock.json
-│  ├─ package.json
-│  ├─ public
-│  │  ├─ businessman_ponder_question.gif
-│  │  ├─ talking-avatar.riv
-│  │  └─ THINKING_FACE.gif
-│  ├─ README.md
-│  ├─ src
-│  │  ├─ components
-│  │  │  ├─ App
-│  │  │  │  ├─ App.css
-│  │  │  │  └─ App.tsx
-│  │  │  ├─ Avatar
-│  │  │  │  └─ Avatar.tsx
-│  │  │  ├─ AvatarSidebar
-│  │  │  │  ├─ AvatarSidebar.css
-│  │  │  │  └─ AvatarSidebar.tsx
-│  │  │  ├─ ChatPanel
-│  │  │  │  ├─ ChatPanel.css
-│  │  │  │  └─ ChatPanel.tsx
-│  │  │  └─ layout
-│  │  │     ├─ Footer
-│  │  │     │  └─ footer.tsx
-│  │  │     ├─ Header
-│  │  │     │  ├─ Header.css
-│  │  │     │  └─ Header.tsx
-│  │  │     └─ layout
-│  │  │        ├─ AppLayout.css
-│  │  │        └─ AppLayout.tsx
-│  │  ├─ index.css
-│  │  ├─ main.tsx
-│  │  ├─ services
-│  │  │  └─ api.ts
-│  │  └─ types
-│  │     └─ chat.ts
-│  ├─ tsconfig.app.json
-│  ├─ tsconfig.json
-│  ├─ tsconfig.node.json
-│  └─ vite.config.ts
-├─ README.md
-└─ scripts
+An interactive portfolio experience powered by a conversational AI agent that guides visitors through work, skills, and next steps.
 
-```
-```
-AI_Avatar_Agent
-├─ backend
-│  ├─ app
-│  │  ├─ api
-│  │  ├─ main.py
-│  │  ├─ models
-│  │  ├─ requirements.txt
-│  │  ├─ services
-│  │  │  ├─ agent_service.py
-│  │  │  ├─ llm_service.py
-│  │  │  ├─ memory_service.py
-│  │  │  └─ tts_service.py
-│  │  └─ utils
-│  ├─ requirements.txt
-│  └─ static
-│     └─ audio
-│        ├─ 5b7ca22e-4007-4bfe-90ca-7ac665b2f826.mp3
-│        ├─ 5fed65cd-23c7-42da-8b79-ae26c3db33c7.mp3
-│        └─ e13ac1a9-6959-4dd5-a61f-101bb4d77826.mp3
-├─ docker-compose.yml
-├─ docs
-├─ frontend
-│  ├─ eslint.config.js
-│  ├─ index.html
-│  ├─ package-lock.json
-│  ├─ package.json
-│  ├─ public
-│  │  ├─ businessman_ponder_question.gif
-│  │  ├─ talking-avatar.riv
-│  │  └─ THINKING_FACE.gif
-│  ├─ README.md
-│  ├─ src
-│  │  ├─ components
-│  │  │  ├─ App
-│  │  │  │  ├─ App.css
-│  │  │  │  └─ App.tsx
-│  │  │  ├─ Avatar
-│  │  │  │  └─ Avatar.tsx
-│  │  │  ├─ AvatarSidebar
-│  │  │  │  ├─ AvatarSidebar.css
-│  │  │  │  └─ AvatarSidebar.tsx
-│  │  │  ├─ ChatPanel
-│  │  │  │  ├─ ChatPanel.css
-│  │  │  │  └─ ChatPanel.tsx
-│  │  │  └─ layout
-│  │  │     ├─ Footer
-│  │  │     │  └─ footer.tsx
-│  │  │     ├─ Header
-│  │  │     │  ├─ Header.css
-│  │  │     │  └─ Header.tsx
-│  │  │     └─ layout
-│  │  │        ├─ AppLayout.css
-│  │  │        └─ AppLayout.tsx
-│  │  ├─ index.css
-│  │  ├─ main.tsx
-│  │  ├─ services
-│  │  │  └─ api.ts
-│  │  └─ types
-│  │     └─ chat.ts
-│  ├─ tsconfig.app.json
-│  ├─ tsconfig.json
-│  ├─ tsconfig.node.json
-│  └─ vite.config.ts
-├─ README.md
-└─ scripts
+## Demo
 
+Demo video, screenshots, and live deployment links will be added here.
+
+## Key Features
+
+- Conversational agent that leads the interaction with intent, style, and follow-up logic
+- Structured responses designed around answer, value, and direction
+- Session-based memory for contextual conversations
+- Text-to-Speech generation with browser audio playback
+- Interrupt-aware chat UI for responsive voice interactions
+- SQLite and runtime logging for conversation visibility
+
+## Tech Stack
+
+**Frontend**
+
+- React
+- TypeScript
+- Vite
+- Axios
+
+**Backend**
+
+- FastAPI
+- Python
+- SQLite
+- Uvicorn
+
+**AI**
+
+- Groq LLM API
+- Modular agent layer
+- ElevenLabs TTS
+- OpenAI TTS fallback
+
+**Infrastructure**
+
+- Render for backend deployment
+- Vercel for frontend deployment
+
+## Architecture Overview
+
+The application is split into a React frontend and a FastAPI backend. The frontend manages the chat experience, audio playback, and interrupt behavior. The backend handles message processing through modular services:
+
+- **Agent**: interprets intent, applies response style, and decides the next conversational direction
+- **LLM**: generates structured responses through Groq
+- **Memory**: maintains session context across turns
+- **TTS**: creates playable audio using ElevenLabs with OpenAI as a fallback provider
+
+## Project Structure
+
+```text
+AI_Interactive_Portfolio/
+|-- backend/
+|   |-- app/
+|   |   |-- main.py
+|   |   |-- services/
+|   |   |   |-- agent_service.py
+|   |   |   |-- llm_service.py
+|   |   |   |-- memory_service.py
+|   |   |   `-- tts_service.py
+|   |   `-- requirements.txt
+|   `-- static/
+|       `-- audio/
+|-- frontend/
+|   |-- src/
+|   |   |-- components/
+|   |   |-- services/
+|   |   `-- types/
+|   |-- package.json
+|   `-- vite.config.ts
+`-- README.md
 ```
+
+## Getting Started
+
+### Clone the Repository
+
+```bash
+git clone <repository-url>
+cd AI_Interactive_Portfolio
+```
+
+### Backend Setup
+
+```bash
+cd backend/app
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+On Windows PowerShell:
+
+```powershell
+cd backend/app
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+The backend runs on `http://localhost:8000` by default.
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend runs on the local Vite URL shown in the terminal.
+
+## Environment Variables
+
+Create a `.env` file in `backend`:
+
+```env
+GROQ_API_KEY=your_groq_api_key
+ELEVENLABS_API_KEY=your_elevenlabs_api_key
+OPENAI_API_KEY=your_openai_api_key
+BASE_URL=http://localhost:8000
+CORS_ORIGINS=http://localhost:5173
+```
+
+Create a `.env` file in `frontend`:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+## Deployment
+
+The backend is deployed on Render and the frontend is deployed on Vercel.
+
+## Future Improvements
+
+- Add RAG for portfolio-specific document retrieval
+- Expand analytics for conversation quality and user intent
+- Improve response latency with streaming and audio caching
+- Add admin tools for prompt, content, and session review

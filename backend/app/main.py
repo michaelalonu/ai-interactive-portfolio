@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from services.llm_service import generate_response
+from services.logger import get_logger
 from dotenv import load_dotenv
 import os
 
@@ -10,6 +11,7 @@ import os
 
 app = FastAPI()
 load_dotenv()
+logger = get_logger(__name__)
 
 origins = os.getenv("CORS_ORIGINS", "").split(",")
 
@@ -29,7 +31,7 @@ class ChatRequest(BaseModel):
 
 @app.post("/chat")
 async def chat(req: ChatRequest):
-    print("Entered Chat Endpoint with message:", req.message)  # Debug
+    logger.info(f"[{req.session_id}] Incoming message: {req.message}")
     response = generate_response(
         req.message,
         req.session_id

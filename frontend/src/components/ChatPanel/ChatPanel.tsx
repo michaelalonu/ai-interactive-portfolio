@@ -39,7 +39,8 @@ function ChatPanel({ avatarControlsRef }: Props) {
 
     avatarControlsRef.current?.startTalking();
 
-    audio.play().catch(() => {
+    audio.play().catch((err) => {
+      console.error("Audio play failed:", err);
       avatarControlsRef.current?.stopTalking();
     });
 
@@ -47,7 +48,8 @@ function ChatPanel({ avatarControlsRef }: Props) {
       avatarControlsRef.current?.stopTalking();
     };
 
-    audio.onerror = () => {
+    audio.onerror = (err) => {
+      console.error("Audio play failed:", err);
       avatarControlsRef.current?.stopTalking();
     };
   }
@@ -67,7 +69,7 @@ function ChatPanel({ avatarControlsRef }: Props) {
 
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-    console.log("Controls in ChatPanel:", avatarControlsRef.current); //debug
+    
     try {
       const res = await sendMessage(userMessage.content, sessionId);
       setIsTyping(false);
@@ -79,7 +81,7 @@ function ChatPanel({ avatarControlsRef }: Props) {
 
       setMessages((prev) => [...prev, botMessage]);
       if (res.tts_url) {
-        playAudio(`http://localhost:8000${res.tts_url}`);
+        playAudio(res.tts_url);
       }
     } catch (err) {
       console.error(err);
@@ -129,11 +131,6 @@ function ChatPanel({ avatarControlsRef }: Props) {
           {loading ? "..." : "Send"}
         </button>
       </div>
-      {/* <Avatar
-        onReady={(controls) => {
-          avatarControlsRef.current = controls;
-        }} //the child avatar returns the controls to start and stop talking, which are stored in a ref to be used when playing audio
-      /> */}
     </div>
   );
 }
