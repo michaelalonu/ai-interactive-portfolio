@@ -5,11 +5,20 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+# Python cache (כיסוי מלא)
+**/__pycache__/
 
 # Sensitive data
 .env
 backend/.env
 data/
+
+# Environment variants
+.env.*
+!.env.example
+
+# Vite env (frontend)
+frontend/.env
 
 # JavaScript / Frontend
 node_modules/
@@ -27,3 +36,13 @@ frontend/dist/
 *.sln
 *.sw?
 PROJECT_CONTEXT.md
+
+# Logs
+*.log
+
+# SQLite / local DB
+*.db
+
+# Build artifacts נוספים
+build/
+coverage/

@@ -1,13 +1,15 @@
 import os
 import json, time
-from tracemalloc import start
 from groq import Groq
 from dotenv import load_dotenv
 from services.agent_service import build_agent_decision, build_agent_decision_from_intent
 from services.memory_service import get_history, add_message
 from services.tts_service import generate_tts
+from services.logging_service import log_chat
+from services.logger import get_logger
 
 load_dotenv()
+logger = get_logger(__name__)
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
@@ -142,8 +144,8 @@ def generate_response(user_message: str, session_id: str, forced_intent: str | N
             temperature=0.7,
         )
         raw_answer = completion.choices[0].message.content
-    except Exception as e:
-        print(f"Error calling Groq: {e}")
+    except Exception:
+        logger.exception("Error calling Groq API")
         raw_answer = "I'm having a brief technical moment. Can you give me a minute or two and ask again? If this continues, please reach out to the administrator."
     final_answer = f"{raw_answer.strip()}"
 
@@ -154,9 +156,13 @@ def generate_response(user_message: str, session_id: str, forced_intent: str | N
 
     tts_url = generate_tts(final_answer)
     latency = time.time() - start
-    print(f"[LLM] intent={agent_decision.intent} latency={latency:.2f}s")
-    print(f"[USER] {user_message}")
-    print(f"[AI] {raw_answer}")
+
+    log_chat(user_message, final_answer, agent_decision.intent, latency)
+    if tts_url:
+        logger.info("TTS generated successfully")
+    else:
+        logger.warning("TTS generation failed")
+    logger.info(f"intent={agent_decision.intent} latency={latency:.2f}s")
     return {
         "message": final_answer,
         "intent": agent_decision.intent,
