@@ -13,14 +13,15 @@ logger = get_logger(__name__)
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+SYSTEM_PROMPT_PATH = os.path.join(BASE_DIR, "data", "system_prompt.txt")
+PROFILE_PATH = os.path.join(BASE_DIR, "data", "profile.json")
 
-with open(os.path.join(BASE_DIR, "../data/system_prompt.txt")) as f:
+with open(SYSTEM_PROMPT_PATH, "r", encoding="utf-8") as f:
     SYSTEM_PROMPT = f.read()
 
-with open(os.path.join(BASE_DIR, "../data/profile.json")) as f:
+with open(PROFILE_PATH, "r", encoding="utf-8") as f:
     PROFILE = json.load(f)
-
 
 def _format_arsenal(arsenal: dict) -> str:
     category_labels = {
