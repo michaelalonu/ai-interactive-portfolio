@@ -2,11 +2,11 @@ import os
 import json, time
 from groq import Groq
 from dotenv import load_dotenv
-from services.agent_service import build_agent_decision, build_agent_decision_from_intent
-from services.memory_service import get_history, add_message
-from services.tts_service import generate_tts
-from services.logging_service import log_chat
-from services.logger import get_logger
+from app.services.agent_service import build_agent_decision, build_agent_decision_from_intent
+from app.services.memory_service import get_history, add_message
+from app.services.tts_service import generate_tts
+from app.services.logging_service import log_chat
+from app.services.logger import get_logger
 
 load_dotenv()
 logger = get_logger(__name__)

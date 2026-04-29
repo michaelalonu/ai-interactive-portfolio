@@ -2,12 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from services.llm_service import generate_response
-from services.logger import get_logger
+from app.services.llm_service import generate_response
+from app.services.logger import get_logger
 from dotenv import load_dotenv
 import os
 
-#uvicorn main:app --reload
+# from backend dir, uvicorn main:app --reload
 
 app = FastAPI()
 load_dotenv()
