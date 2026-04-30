@@ -77,7 +77,20 @@
         "AWS S3",
         "Docker"
       ]
-    }
+    },
+    {
+      "name": "AI Interactive Portfolio",
+      "summary": "An AI-driven interactive portfolio that replaces traditional static CVs with a conversational sales agent.",
+      "impact": "Transforms passive portfolio browsing into an active, guided experience that increases engagement and communicates value more effectively.",
+      "stack": ["FastAPI", "React", "TypeScript", "Groq LLM", "ElevenLabs", "SQLite"],
+      "technical_highlights": [
+        "Built a modular agent layer to control intent, style, and conversational flow",
+        "Implemented session-based memory for contextual multi-turn conversations",
+        "Integrated TTS with ElevenLabs and fallback handling",
+        "Designed structured responses (answer + value + direction) for persuasion",
+        "Deployed full-stack system (Render + Vercel) with production-ready configuration"
+      ]
+  }
   ],
 "soft_skills_pitch": {
   "approach": "I focus on clean backend design, maintainable code, and structured problem solving. I break down complex challenges into smaller, manageable tasks and approach them methodically.",
