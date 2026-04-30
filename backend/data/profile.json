@@ -77,6 +77,19 @@
         "AWS S3",
         "Docker"
       ]
+    },
+    {
+      "name": "AI Interactive Portfolio",
+      "summary": "An AI-driven interactive portfolio that replaces a static CV with a conversational agent that presents experience, skills, and projects dynamically.",
+      "impact": "Transforms passive portfolio browsing into an interactive experience that increases engagement and communicates technical value through conversation.",
+      "stack": ["FastAPI", "React", "TypeScript", "Groq LLM", "ElevenLabs", "SQLite"],
+      "technical_highlights": [
+        "Built an agent layer in Python that determines intent, response style, and conversation direction before LLM execution",
+        "Implemented session-based memory for contextual multi-turn conversations",
+        "Integrated text-to-speech generation using ElevenLabs with fallback handling for reliability",
+        "Designed structured response format (answer, value, direction) to guide conversational flow",
+        "Deployed full-stack system using Render (backend) and Vercel (frontend) with production-ready configuration"
+      ]
     }
   ],
 "soft_skills_pitch": {
