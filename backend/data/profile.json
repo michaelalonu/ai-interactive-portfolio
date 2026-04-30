@@ -1,0 +1,86 @@
+{
+  "identity": {
+    "name": "Michael Uzan",
+    "role": "Backend Developer | Full-Stack Capable",
+    "focus": "Backend Architecture, API Design, AI Integrations",
+    "location": "Jerusalem Area"
+  },
+  "technical_arsenal": {
+    "languages": [
+      "TypeScript",
+      "JavaScript",
+      "Python",
+      "SQL"
+    ],
+    "backend": [
+      "FastAPI",
+      "Node.js",
+      "Express",
+      "REST APIs",
+      "JWT Authentication"
+    ],
+    "frontend": [
+      "React",
+      "Redux Toolkit",
+      "Vite",
+      "Axios",
+      "Responsive UI"
+    ],
+    "data_devops": [
+      "MySQL",
+      "Sequelize ORM",
+      "Docker",
+      "Docker Compose"
+    ],
+    "cloud_realtime_ai": [
+      "AWS S3",
+      "LocalStack",
+      "Socket.IO",
+      "Multi-LLM Integration"
+    ]
+  },
+  "flagship_projects": [
+    {
+      "name": "Multi-Provider AI Gateway",
+      "summary": "A backend-focused gateway that routes AI requests through a unified API across multiple providers.",
+      "impact": "Reduced single-provider dependency by adding fallback, caching, and request-level observability.",
+      "technical_highlights": [
+        "Built a unified request flow for Gemini, Groq, and HuggingFace through one FastAPI interface.",
+        "Implemented provider fallback to keep responses flowing when a selected provider fails.",
+        "Added in-memory caching and latency tracking to improve response efficiency and surface runtime behavior.",
+        "Integrated IP-based rate limiting to protect the API from abusive traffic."
+      ],
+      "stack": [
+        "FastAPI",
+        "Python",
+        "AI Provider APIs"
+      ]
+    },
+    {
+      "name": "Vacations Are Us",
+      "summary": "A full-stack vacation management platform with authentication, admin workflows, cloud-backed uploads, and real-time updates.",
+      "impact": "Delivered a complete booking and management flow with secure access control and synchronized user updates.",
+      "technical_highlights": [
+        "Implemented JWT-based authentication and role-based authorization for user and admin flows.",
+        "Built CRUD workflows for vacation management with a React frontend and Express backend.",
+        "Handled image uploads through AWS S3, using LocalStack for local development parity.",
+        "Added real-time updates with Socket.IO and packaged the environment with Docker Compose."
+      ],
+      "stack": [
+        "Node.js",
+        "Express",
+        "TypeScript",
+        "React",
+        "MySQL",
+        "Sequelize",
+        "Socket.IO",
+        "AWS S3",
+        "Docker"
+      ]
+    }
+  ],
+"soft_skills_pitch": {
+  "approach": "I focus on clean backend design, maintainable code, and structured problem solving. I break down complex challenges into smaller, manageable tasks and approach them methodically.",
+  "value_add": "I bring strong attention to detail, intellectual curiosity, and a collaborative mindset. I’m open to feedback, continuously improving, and focused on building reliable systems that are practical to ship and maintain."
+}
+}
