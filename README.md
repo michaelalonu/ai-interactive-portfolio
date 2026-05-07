@@ -5,7 +5,7 @@ An interactive portfolio experience powered by a conversational AI agent that gu
 ## Demo
 
 Live deployment: https://michael-ai-interactive-portfolio.vercel.app/
-![Portfolio Screenshot](.frontend/src/assets/Portfolio.png)
+![Portfolio Screenshot](./assets/Portfolio.png)
 
 ## Key Features
 
