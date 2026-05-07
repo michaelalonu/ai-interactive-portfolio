@@ -18,13 +18,14 @@ function getSessionId() {
 }
 
 const starterPrompts = [
-  "🚀 Show flagship projects",
-  "🧠 Explain the AI architecture",
-  "⚙️ Backend deep dive",
-  "🎤 How does the voice system work?",
-  "📈 What problems did you solve?",
-  "👤 Tell me about Michael",
+  "Show your backend projects",
+  "Explain the architecture behind this app",
+  "Walk me through the request flow",
+  "How does the AI voice system work? 🔊",
+  "What technical challenges did you solve?",
+  "👤 Tell me about your experience",
 ];
+
 type Props = {
   avatarControlsRef: React.RefObject<{
     startTalking: () => void;
