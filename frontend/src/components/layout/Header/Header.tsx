@@ -18,13 +18,17 @@ export default function Header() {
           GitHub
         </a>
         <a
-          href="https://www.linkedin.com/in/michael-uzan"
+          href="https://www.linkedin.com/in/michaeluzan"
           target="_blank"
           rel="noreferrer"
         >
           LinkedIn
         </a>
-        <a href="/" aria-current="page">
+        <a 
+          href="https://michaelalonu.github.io/Portfolio/"
+          target="_blank"
+          rel="noreferrer"
+          >
           Portfolio
         </a>
       </nav>

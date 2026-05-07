@@ -1,3 +1,3 @@
 export default function Footer() {
-  return <div>AI Sales Agent - Demo</div>;
+  return <div>AI Avatar Interview Assistant</div>;
 }
