@@ -158,7 +158,7 @@ function ChatPanel({ avatarControlsRef }: Props) {
           }}
         />
 
-        <button className="button" onClick={handleSend} disabled={loading}>
+        <button className="button" onClick={() => handleSend()} disabled={loading}>
           {loading ? "..." : "Send"}
         </button>
       </div>
