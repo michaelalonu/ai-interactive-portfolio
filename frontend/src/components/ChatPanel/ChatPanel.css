@@ -146,6 +146,36 @@
 
 .button:disabled { opacity: 0.48; cursor: default; }
 
+.welcomeSection {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+}
+
+.welcomeText {
+  opacity: 0.8;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.starterPrompts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.promptChip {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.promptChip:hover {
+  transform: scale(1.03);
+}
 /* ── Mobile ───────────────────────────────────────────────────── */
 @media (max-width: 860px) {
   .ChatPanel { padding: 10px 10px 8px; gap: 8px; }
@@ -165,4 +195,21 @@
   .input { padding: 9px 12px; border-radius: 9px; }
 
   .button { min-width: 66px; padding: 9px 14px; font-size: 0.84rem; border-radius: 9px; }
+}
+
+@media (max-width: 600px) {
+  .welcomeSection {
+    margin-top: 10px;
+    padding: 10px;
+  }
+
+  .starterPrompts {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .promptChip {
+    width: 100%;
+    text-align: left;
+  }
 }

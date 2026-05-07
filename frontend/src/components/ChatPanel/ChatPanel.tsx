@@ -4,6 +4,14 @@ import { sendMessage } from "../../services/api";
 import type { Message } from "../../types/chat";
 
 const sessionId = "test-session-123";
+const starterPrompts = [
+  "🚀 Show flagship projects",
+  "🧠 Explain the AI architecture",
+  "⚙️ Backend deep dive",
+  "🎤 How does the voice system work?",
+  "📈 What problems did you solve?",
+  "👤 Tell me about Michael",
+];
 type Props = {
   avatarControlsRef: React.RefObject<{
     startTalking: () => void;
@@ -53,9 +61,10 @@ function ChatPanel({ avatarControlsRef }: Props) {
       avatarControlsRef.current?.stopTalking();
     };
   }
-  const handleSend = async () => {
+  const handleSend = async (messageText?: string) => {
     console.log("Controls in ChatPanel:", avatarControlsRef.current);
-    if (!input || loading) return;
+    const text = messageText || input;
+    if (!text || loading) return;
     stopCurrentAudio();
     setLoading(true);
     setTimeout(() => {
@@ -64,12 +73,12 @@ function ChatPanel({ avatarControlsRef }: Props) {
 
     const userMessage: Message = {
       role: "user",
-      content: input,
+      content: text,
     };
 
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-    
+
     try {
       const res = await sendMessage(userMessage.content, sessionId);
       setIsTyping(false);
@@ -102,6 +111,28 @@ function ChatPanel({ avatarControlsRef }: Props) {
   return (
     <div className="ChatPanel">
       <div className="messages">
+        {messages.length === 0 && (
+          <div className="welcomeSection">
+            <h2>AI Interactive Portfolio</h2>
+
+            <p className="welcomeText">
+              Explore projects, backend systems, AI architecture, and technical
+              decisions through conversation.
+            </p>
+
+            <div className="starterPrompts">
+              {starterPrompts.map((prompt) => (
+                <button
+                  key={prompt}
+                  className="promptChip"
+                  onClick={() => handleSend(prompt)}
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         {messages.map((msg, i) => (
           <div key={i} className={`messageRow ${msg.role}`}>
             <div className={`messageBubble ${msg.role}`}>{msg.content}</div>
