@@ -3,7 +3,20 @@ import { useState, useEffect, useRef } from "react";
 import { sendMessage } from "../../services/api";
 import type { Message } from "../../types/chat";
 
-const sessionId = "test-session-123";
+const SESSION_STORAGE_KEY = "avatar-session-id";
+
+function getSessionId() {
+  const existingSessionId = localStorage.getItem(SESSION_STORAGE_KEY);
+  if (existingSessionId) return existingSessionId;
+
+  const newSessionId =
+    crypto.randomUUID?.() ??
+    `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+  localStorage.setItem(SESSION_STORAGE_KEY, newSessionId);
+  return newSessionId;
+}
+
 const starterPrompts = [
   "🚀 Show flagship projects",
   "🧠 Explain the AI architecture",
@@ -20,6 +33,7 @@ type Props = {
 };
 
 function ChatPanel({ avatarControlsRef }: Props) {
+  const sessionIdRef = useRef(getSessionId());
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -80,7 +94,7 @@ function ChatPanel({ avatarControlsRef }: Props) {
     setInput("");
 
     try {
-      const res = await sendMessage(userMessage.content, sessionId);
+      const res = await sendMessage(userMessage.content, sessionIdRef.current);
       setIsTyping(false);
 
       const botMessage: Message = {
