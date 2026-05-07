@@ -1,90 +1,10 @@
-/*
- * APPROACH: clip-path on the Rive wrapper div
- * ─────────────────────────────────────────────
- * clip-path: inset() cuts pixels at paint level — no z-index
- * battles, no color matching, works on every screen size.
- *
- * --clip-l : hides the left number strip
- * --clip-r : mirrors left so the face stays centred
- *
- * Desktop/tablet: 10% each side (confirmed working by you).
- * Mobile: strip is physically the same px width but the canvas
- * is much narrower, so the strip is a larger % — needs 18%.
- */
+/* Desktop/tablet keep the original Rive crop. Mobile uses a fixed circular window. */
 
-/* ── Default (desktop + tablet) — confirmed working ─────────── */
-/* :root {
-  --clip-l: 10%;
-  --clip-r: 10%;
-} */
- :root {
+:root {
   --clip-l: clamp(40px, 10%, 80px);
   --clip-r: clamp(40px, 10%, 80px);
 }
 
-/* ── Mobile override ─────────────────────────────────────────── */
-/* @media (max-width: 600px) {
-  :root {
-    --clip-l: clamp(45px, 18vw, 70px);
-    --clip-r: clamp(45px, 18vw, 70px);
-  }
-} */ 
-
-
-/* Mobile גדול (≈ 600–400) — פה הבעיה */
-@media (max-width: 600px) {
-  :root {
---clip-l: max(60px, 32%);
---clip-r: max(60px, 32%);  }
-}
-
-/* Mobile רגיל (≈ 400–355) */
-@media (max-width: 477px) {
-  :root {
-    --clip-l: clamp(123px, 27%, 170px);
-    --clip-r: clamp(123px, 27%, 170px);
-  }
-}
-@media (max-width: 467px) {
-  :root {
-    --clip-l: clamp(120px, 25%, 170px);
-    --clip-r: clamp(120px, 25%, 170px);
-  }
-}
-@media (max-width: 450px) {
-  :root {
-    --clip-l: clamp(110px, 23%, 150px);
-    --clip-r: clamp(110px, 23%, 150px);
-  }
-}
-@media (max-width: 423px) {
-  :root {
-    --clip-l: clamp(96px, 22%, 120px);
-    --clip-r: clamp(94px, 22%, 120px);
-  }
-}
-@media (max-width: 394px) {
-  :root {
-    --clip-l: clamp(85px, 20%, 120px);
-    --clip-r: clamp(85px, 20%, 120px);
-  }
-}
-@media (max-width: 374px) {
-  :root {
-    --clip-l: clamp(75px, 20%, 120px);
-    --clip-r: clamp(75px, 20%, 120px);
-  }
-}
-
-/* Small devices (≈ 355 ומטה) */
-@media (max-width: 355px) {
-  :root {
-    --clip-l: 62px;
-    --clip-r: 62px;
-  }
-}
-
-/* ── Outer wrapper ───────────────────────────────────────────── */
 .avatarWrapper {
   width: 100%;
   height: 100%;
@@ -102,28 +22,18 @@
     linear-gradient(180deg, #f2f7ff 0%, #e8f0fe 55%, #ddeaff 100%);
 }
 
-/* ── Mobile padding ──────────────────────────────────────────── */
-@media (max-width: 600px) {
-  .avatarWrapper {
-    padding: 10px 8px;
-  }
-}
-
-/* ── Tablet ──────────────────────────────────────────────────── */
 @media (min-width: 601px) and (max-width: 860px) {
   .avatarWrapper {
     padding: 14px 10px;
   }
 }
 
-/* ── Large desktop ───────────────────────────────────────────── */
 @media (min-width: 1400px) {
   .avatarWrapper {
     padding: 28px 20px;
   }
 }
 
-/* ── Canvas container ────────────────────────────────────────── */
 .avatarCanvas {
   width: 100%;
   height: 100%;
@@ -134,7 +44,6 @@
   position: relative;
 }
 
-/* ── Rive host div — this is where the clip happens ─────────── */
 .avatarCanvas > div {
   width: 100% !important;
   height: 100% !important;
@@ -142,14 +51,36 @@
   overflow: hidden;
 }
 
-/* ── Canvas itself ───────────────────────────────────────────── */
 .avatarCanvas > div canvas {
   width: 100% !important;
   height: 100% !important;
   display: block;
 }
 
-/* ── Hide Rive dev buttons ───────────────────────────────────── */
 .avatarWrapper button {
   display: none !important;
+}
+
+@media (max-width: 600px) {
+  .avatarWrapper {
+    padding: 4px 6px;
+  }
+
+  .avatarCanvas {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .avatarCanvas > div {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 130% !important;
+    height: 130% !important;
+    clip-path: none;
+    transform: translate(-50%, -50%);
+  }
 }

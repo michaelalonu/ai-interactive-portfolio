@@ -158,8 +158,9 @@ body::before {
    ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 600px) {
   .appLayout {
+    --header-h: 84px;
     grid-template-columns: 1fr;
-    grid-template-rows: var(--header-h) 260px 1fr auto;
+    grid-template-rows: var(--header-h) 150px minmax(0, 1fr);
     gap: 8px;
     padding: 8px;
   }
@@ -167,7 +168,7 @@ body::before {
   .appHeader { grid-column: 1; grid-row: 1; }
   .sidebar   { grid-column: 1; grid-row: 2; }
   .main      { grid-column: 1; grid-row: 3; }
-  .footer    { grid-column: 1; grid-row: 4; justify-content: center; padding-bottom: 4px; }
+  .footer    { display: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════

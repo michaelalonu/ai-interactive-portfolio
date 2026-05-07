@@ -199,17 +199,28 @@
 
 @media (max-width: 600px) {
   .welcomeSection {
-    margin-top: 10px;
-    padding: 10px;
+    margin-top: 0;
+    padding: 4px 6px;
+  }
+
+  .welcomeSection h2 {
+    display: none;
+  }
+
+  .welcomeText {
+    margin: 0 0 12px;
+    font-size: 0.9rem;
   }
 
   .starterPrompts {
     flex-direction: column;
+    gap: 10px;
     align-items: stretch;
   }
 
   .promptChip {
     width: 100%;
-    text-align: left;
+    padding: 12px 14px;
+    text-align: center;
   }
 }
